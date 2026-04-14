@@ -13,6 +13,7 @@ import ctypes
 import json
 import webbrowser
 import urllib.parse
+import urllib.request
 import tkinter.messagebox
 import shutil
 import re
@@ -26,15 +27,10 @@ try:
 except ImportError:
     gw = None
 
-import urllib.request
-import json
-import tkinter.messagebox
-import os
-import webbrowser
-
+# --- VERSION CONTROL & OTA UPDATER ---
 CURRENT_VERSION = 1.5
-# Paste your Raw GitHub URL here
-UPDATE_URL = "https://raw.githubusercontent.com/Kamalesh-S2k5-RR/Net_Immune_final_code/main/version.json"
+# Pointing to your new Version Control Test repository!
+UPDATE_URL = "https://raw.githubusercontent.com/Kamalesh-S2k5-RR/Net_Immune_version-control-test/main/version.json"
 
 def check_for_updates():
     try:
@@ -65,7 +61,7 @@ def check_for_updates():
     except Exception:
         # Silently bypass if the user has no internet or GitHub is unreachable
         pass
-        
+
 # --- FILE PATHS & CONFIGURATION ---
 DOWNLOADS_FOLDER = os.path.join(os.path.expanduser('~'), 'Downloads')
 LOGS_FOLDER = "Logs"
@@ -312,7 +308,7 @@ class DashboardWindow:
         self.tut_win.attributes("-alpha", 0.0) 
         
         self.tut_win.transient(self.window) 
-        self.tut_win.grab_set()             
+        self.tut_win.grab_set()              
         self.tut_win.focus_force()          
         self.tut_win.attributes("-topmost", True)
         self.tut_win.resizable(False, False)
@@ -511,7 +507,6 @@ class DashboardWindow:
         
         ctk.CTkButton(self.settings_frame, text="🔥 Factory Reset (Wipe Data)", fg_color="transparent", border_width=1, border_color="#CC0000", text_color="#CC0000", hover_color="#550000", command=self.factory_reset).pack(side="bottom", pady=20)
 
-    # --- NEW REGISTRY LOGIC FOR AUTO-START ---
     def is_autostart_enabled(self):
         try:
             key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", 0, winreg.KEY_READ)
