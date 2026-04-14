@@ -1279,6 +1279,10 @@ def start_main_app():
     
     root.geometry(f"100x100+{(root.winfo_screenwidth() // 2) - 50}+20")
     app = FloatingMascot(root)
+    
+    # TRIGGER THE UPDATE CHECK HERE
+    check_for_updates()
+    
     root.mainloop()
 
 if __name__ == "__main__":
