@@ -26,6 +26,46 @@ try:
 except ImportError:
     gw = None
 
+import urllib.request
+import json
+import tkinter.messagebox
+import os
+import webbrowser
+
+CURRENT_VERSION = 1.5
+# Paste your Raw GitHub URL here
+UPDATE_URL = "https://raw.githubusercontent.com/Kamalesh-S2k5-RR/Net_Immune_final_code/main/version.json"
+
+def check_for_updates():
+    try:
+        # 1. Fetch the latest version info from GitHub
+        req = urllib.request.Request(UPDATE_URL, headers={'Cache-Control': 'no-cache'})
+        response = urllib.request.urlopen(req, timeout=4)
+        data = json.loads(response.read().decode('utf-8'))
+        
+        latest_version = float(data.get("latest_version", CURRENT_VERSION))
+        download_url = data.get("download_url")
+        notes = data.get("release_notes", "")
+
+        # 2. Compare the cloud version against the local version
+        if latest_version > CURRENT_VERSION:
+            
+            # 3. Intercept the startup and prompt the user
+            do_update = tkinter.messagebox.askyesno(
+                "Net Immune Update Available", 
+                f"Version {latest_version} is now available!\n\nRelease Notes:\n{notes}\n\nWould you like to download the update now?"
+            )
+            
+            if do_update:
+                # 4. Route the user to the secure download link
+                webbrowser.open(download_url)
+                # 5. Shut down the current app so the installer can overwrite the files
+                os._exit(0)
+                
+    except Exception:
+        # Silently bypass if the user has no internet or GitHub is unreachable
+        pass
+        
 # --- FILE PATHS & CONFIGURATION ---
 DOWNLOADS_FOLDER = os.path.join(os.path.expanduser('~'), 'Downloads')
 LOGS_FOLDER = "Logs"
